@@ -1,6 +1,6 @@
 permalink: /blog/:year/:month/:title.html 
 include: ['.htaccess']
-exclude: [".rvmrc", ".rbenv-version", "README.md", "Rakefile", "changelog.md", "CNAME", "Gemfile", "Gemfile.lock"]
+exclude: [".rvmrc", ".rbenv-version", "README.md", "Rakefile", "changelog.md", "CNAME", "Gemfile"]
 markdown: kramdown
 highlights: pygments
 url: 
@@ -21,15 +21,15 @@ kramdown:
   use_coderay: false
 
 JB :
-  IMAGE_PATH : http://coolshell.info/images
+  IMAGE_PATH : http://ashan.info/images
 
 # presonal config
-domain: http://coolshell.info
-title: Lippi-浮生志
-description: Draw my life with code
-author: Lippi.OuYang
-email: ouyanglip@gmail.com
-github: LippiOuYang
+domain: http://ashan.info
+title: 阿山博客
+description: 技术人生
+author: 阿山
+email: work.ashan@gmail.com
+github: SuperAshan
 
 config:
   js_dir:
