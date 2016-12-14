@@ -9,6 +9,7 @@ tags:
   - word2vector，wordtovector，词向量，源码，源代码，负抽样，cbow
 ---
 ##基本的参数介绍
+
 + **size** 输出的vector的维度
 + **train** 训练的文本，已经分好词，按照所有的行分割，一行最多10000个词
 + **save-vocab** 将文本中读取的词出现次数保存
@@ -31,15 +32,17 @@ tags:
 
 1. tricks 提前算好sigmod函数:
    
-   `` 	
+    	
+``
 
     expTable = (real *)malloc((EXP_TABLE_SIZE + 1) * sizeof(real));
     for (i = 0; i < EXP_TABLE_SIZE; i++) {
         expTable[i] = exp((i / (real)EXP_TABLE_SIZE * 2 - 1) * MAX_EXP);
         expTable[i] = expTable[i] / (expTable[i] + 1); 
     }
+``
 
-   ``
+   
 ##数据结构介绍
 ``softmax存储词语的huffuman编码信息
 
@@ -222,7 +225,107 @@ label ns中当前词语的label,
 neu1  隐藏层的vector
 nuu1e 误差累积项
 
+两个模型cbow和skip-
+具体的推理过程可以看[csdn 基于hs的模型](http://blog.csdn.net/itplus/article/details/37969979 "csdn 基于hs的模型")
+其中cbow的模型结构如如下文:
 
+![cbow结构图](https://github.com/SuperAshan/SuperAshan.github.io/blob/master/images/word2vector/cbow.png)
+
+cbow更新的伪代码如下:
+
+![cbow的更新伪码](https://github.com/SuperAshan/SuperAshan.github.io/blob/master/images/word2vector/cbowliucheng.png)
  
+看一下使用hs的cbow模型:
+        
+	if (cbow) {  //train the cbow architecture
+      // in -> hidden
+      cw = 0;
+      for (a = b; a < window * 2 + 1 - b; a++) if (a != window) {   //context(w)输入上下文相加得到隐藏层
+        c = sentence_position - window + a;
+        if (c < 0) continue;
+        if (c >= sentence_length) continue;
+        last_word = sen[c];
+        if (last_word == -1) continue;
+        for (c = 0; c < layer1_size; c++) neu1[c] += syn0[c + last_word * layer1_size];
+        cw++;
+      }   
+      if (cw) {
+        for (c = 0; c < layer1_size; c++) neu1[c] /= cw;   //隐藏层的变量除以输入的变量个数
+        if (hs) for (d = 0; d < vocab[word].codelen; d++) {
+          f = 0;
+          l2 = vocab[word].point[d] * layer1_size;  //非叶子节点的位置
+          // Propagate hidden -> output
+          for (c = 0; c < layer1_size; c++) f += neu1[c] * syn1[c + l2];   //逻辑函数的因变量,Xw*参数,即非叶子节点向量
+          if (f <= -MAX_EXP) continue;
+          else if (f >= MAX_EXP) continue;
+          else f = expTable[(int)((f + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2))];  //分类的概率值
+          // 'g' is the gradient multiplied by the learning rate
+          g = (1 - vocab[word].code[d] - f) * alpha;    
+          // Propagate errors output -> hidden
+          for (c = 0; c < layer1_size; c++) neu1e[c] += g * syn1[c + l2];  //误差累积项，用来更新词向量，上下文词的向量
+          // Learn weights hidden -> output
+          for (c = 0; c < layer1_size; c++) syn1[c + l2] += g * neu1[c];   //更新非叶子节点的向量，即参数向量
+        }   
+       //文中此处为负抽样的代码
+       //更新所有上下文词的词向量
+        // hidden -> in
+        for (a = b; a < window * 2 + 1 - b; a++) if (a != window) {
+          c = sentence_position - window + a;
+          if (c < 0) continue;
+          if (c >= sentence_length) continue;
+          last_word = sen[c];
+          if (last_word == -1) continue;
+          for (c = 0; c < layer1_size; c++) syn0[c + last_word * layer1_size] += neu1e[c]; //这一步更新
+        }
 
+负抽样的代码如下:
+
+          // NEGATIVE SAMPLING
+        if (negative > 0) for (d = 0; d < negative + 1; d++) {
+          if (d == 0) {
+            target = word;
+            label = 1;
+          } else {
+            next_random = next_random * (unsigned long long)25214903917 + 11; 
+            target = table[(next_random >> 16) % table_size];
+            if (target == 0) target = next_random % (vocab_size - 1) + 1;
+            if (target == word) continue;
+            label = 0;
+          }   
+          l2 = target * layer1_size;
+          f = 0;
+          for (c = 0; c < layer1_size; c++) f += neu1[c] * syn1neg[c + l2];
+          if (f > MAX_EXP) g = (label - 1) * alpha;
+          else if (f < -MAX_EXP) g = (label - 0) * alpha;
+          else g = (label - expTable[(int)((f + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2))]) * alpha;
+          for (c = 0; c < layer1_size; c++) neu1e[c] += g * syn1neg[c + l2];
+          for (c = 0; c < layer1_size; c++) syn1neg[c + l2] += g * neu1[c];
+        }   
+
+
+
+
+
+附录，推导过程：
+负抽样方法模型推导见:
+[word2vector中的负抽样](http://blog.csdn.net/itplus/article/details/37998797)
+大致思路为条件为上下文，正确的词语概率大，随机负抽样的概率小
+
+![](https://github.com/SuperAshan/SuperAshan.github.io/blob/master/images/word2vector/negtive1.png)
+
+![](https://github.com/SuperAshan/SuperAshan.github.io/blob/master/images/word2vector/negtive2.png)
+
+![](https://github.com/SuperAshan/SuperAshan.github.io/blob/master/images/word2vector/negtive3.png)
+
+![](https://github.com/SuperAshan/SuperAshan.github.io/blob/master/images/word2vector/negtive4.png)
+
+cbow的推导过程:
+
+![](https://github.com/SuperAshan/SuperAshan.github.io/blob/master/images/word2vector/cbow_1.png)
+
+![](https://github.com/SuperAshan/SuperAshan.github.io/blob/master/images/word2vector/cbow_1.png)
+
+![](https://github.com/SuperAshan/SuperAshan.github.io/blob/master/images/word2vector/cbow_1.png)
+
+![](https://github.com/SuperAshan/SuperAshan.github.io/blob/master/images/word2vector/cbow_1.png)
 
