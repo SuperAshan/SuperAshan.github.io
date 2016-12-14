@@ -329,3 +329,6 @@ cbow的推导过程:
 
 ![](http://ashan.info/images/word2vector/cbow_1.png)
 
+
+写在结尾，以上推导过程来自
+[csdn 皮果提博客](http://my.csdn.net/peghoty "csdn 皮果提博客")
