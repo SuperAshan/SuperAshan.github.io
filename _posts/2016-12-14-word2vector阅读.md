@@ -229,11 +229,11 @@ nuu1e 误差累积项
 具体的推理过程可以看[csdn 基于hs的模型](http://blog.csdn.net/itplus/article/details/37969979 "csdn 基于hs的模型")
 其中cbow的模型结构如如下文:
 
-![cbow结构图](https://github.com/SuperAshan/SuperAshan.github.io/blob/master/images/word2vector/cbow.png)
+![cbow结构图](http://ashan.info/images/word2vector/cbow.png)
 
 cbow更新的伪代码如下:
 
-![cbow的更新伪码](https://github.com/SuperAshan/SuperAshan.github.io/blob/master/images/word2vector/cbowliucheng.png)
+![cbow的更新伪码](http://ashan.info/images/word2vector/cbowliucheng.png)
  
 看一下使用hs的cbow模型:
         
@@ -311,21 +311,21 @@ cbow更新的伪代码如下:
 [word2vector中的负抽样](http://blog.csdn.net/itplus/article/details/37998797)
 大致思路为条件为上下文，正确的词语概率大，随机负抽样的概率小
 
-![](https://github.com/SuperAshan/SuperAshan.github.io/blob/master/images/word2vector/negtive1.png)
+![](http://ashan.info/images/word2vector/negtive1.png)
 
-![](https://github.com/SuperAshan/SuperAshan.github.io/blob/master/images/word2vector/negtive2.png)
+![](http://ashan.info/images/word2vector/negtive2.png)
 
-![](https://github.com/SuperAshan/SuperAshan.github.io/blob/master/images/word2vector/negtive3.png)
+![](http://ashan.info/images/word2vector/negtive3.png)
 
-![](https://github.com/SuperAshan/SuperAshan.github.io/blob/master/images/word2vector/negtive4.png)
+![](http://ashan.info/images/word2vector/negtive4.png)
 
 cbow的推导过程:
 
-![](https://github.com/SuperAshan/SuperAshan.github.io/blob/master/images/word2vector/cbow_1.png)
+![](http://ashan.info/images/word2vector/cbow_1.png)
 
-![](https://github.com/SuperAshan/SuperAshan.github.io/blob/master/images/word2vector/cbow_1.png)
+![](http://ashan.info/images/word2vector/cbow_1.png)
 
-![](https://github.com/SuperAshan/SuperAshan.github.io/blob/master/images/word2vector/cbow_1.png)
+![](http://ashan.info/images/word2vector/cbow_1.png)
 
-![](https://github.com/SuperAshan/SuperAshan.github.io/blob/master/images/word2vector/cbow_1.png)
+![](http://ashan.info/images/word2vector/cbow_1.png)
 
