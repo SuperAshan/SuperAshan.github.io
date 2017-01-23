@@ -3,11 +3,10 @@ title: 源码阅读系列之word2vector
 date: 2016-12-14
 layout: post
 permalink: /blog/2016/12/14/word2vector阅读.html
-categories:
-  - 源码阅读
-tags:
-  - word2vector，wordtovector，词向量，源码，源代码，负抽样，cbow
+categories: 源码阅读
+tags: word2vector wordtovector 词向量 源码 源代码 负抽样 cbow
 ---
+
 ##基本的参数介绍
 
 + **size** 输出的vector的维度
@@ -229,11 +228,11 @@ nuu1e 误差累积项
 具体的推理过程可以看[csdn 基于hs的模型](http://blog.csdn.net/itplus/article/details/37969979 "csdn 基于hs的模型")
 其中cbow的模型结构如如下文:
 
-![cbow结构图](http://ashan.info/images/word2vector/cbow.png)
+![cbow结构图](http://superashan.github.io/images/word2vector/cbow.png)
 
 cbow更新的伪代码如下:
 
-![cbow的更新伪码](http://ashan.info/images/word2vector/cbowliucheng.png)
+![cbow的更新伪码](http://superashan.github.io/images/word2vector/cbowliucheng.png)
  
 看一下使用hs的cbow模型:
         
@@ -311,23 +310,23 @@ cbow更新的伪代码如下:
 [word2vector中的负抽样](http://blog.csdn.net/itplus/article/details/37998797)
 大致思路为条件为上下文，正确的词语概率大，随机负抽样的概率小
 
-![](http://ashan.info/images/word2vector/negtive1.png)
+![](http://superashan.github.io/images/word2vector/negtive1.png)
 
-![](http://ashan.info/images/word2vector/negtive2.png)
+![](http://superashan.github.io/images/word2vector/negtive2.png)
 
-![](http://ashan.info/images/word2vector/negtive3.png)
+![](http://superashan.github.io/images/word2vector/negtive3.png)
 
-![](http://ashan.info/images/word2vector/negtive4.png)
+![](http://superashan.github.io/images/word2vector/negtive4.png)
 
 cbow的推导过程:
 
-![](http://ashan.info/images/word2vector/cbow_1.png)
+![](http://superashan.github.io/images/word2vector/cbow_1.png)
 
-![](http://ashan.info/images/word2vector/cbow_1.png)
+![](http://superashan.github.io/images/word2vector/cbow_1.png)
 
-![](http://ashan.info/images/word2vector/cbow_1.png)
+![](http://superashan.github.io/images/word2vector/cbow_1.png)
 
-![](http://ashan.info/images/word2vector/cbow_1.png)
+![](http://superashan.github.io/images/word2vector/cbow_1.png)
 
 
 写在结尾，以上推导过程来自
