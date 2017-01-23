@@ -1,8 +1,20 @@
+---
+title: 工作笔记之一：猜你喜欢模块
+date: 2015-12-09
+layout: post
+permalink: /blog/2017/01/13/guesswantquery.html
+categories:
+  - 工作笔记
+tags: 推荐 短文本 去重 反垃圾
+---
+
+
+
 ##猜你喜欢
 
 推荐语料为搜索query，目标为提升搜索量，提升用户搜索体验，分解一下为推出的query为相关和惊喜度，+热门
 整体方案如下：
-![猜你喜欢数据流程图](http://ashan.info/images/guesswantquery/structure.png)
+![猜你喜欢数据流程图](http://superashan.hithub.io/images/guesswantquery/structure.png)
 
 ###召回阶段
 ----------------------------------------

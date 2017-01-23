@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 我的个人博客
 ================
 
@@ -36,3 +37,11 @@ http://ashan.info
 * http://wtaps.github.io 
 * http://maoshu.cc
 * (你的位置)  
+=======
+SuperAshan's Page(superashan.github.io)
+=================
+
+Please visit [superashan.github.io](http://superashan.github.io).
+
+fork from [here](https://github.com/Yonsm/NET).
+>>>>>>> 20268baab056d777f6812b3c16c602fa7e372773
