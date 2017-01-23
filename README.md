@@ -1,6 +1,6 @@
-YY哥's Page(hustcat.github.io)
+SuperAshan's Page(superashan.github.io)
 =================
 
-Please visit [hustcat.github.io](http://hustcat.github.io).
+Please visit [superashan.github.io](http://superashan.github.io).
 
 fork from [here](https://github.com/Yonsm/NET).

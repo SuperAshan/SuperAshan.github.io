@@ -1,16 +1,16 @@
 future: true
 permalink: /:title/
-url: http://hustcat.github.io
-name: YY哥
-author: hustcat
+url: http://superashan.github.io
+name: 超级山子
+author: superashan
 qq: 
-email: hustcat@gmail.com
-duoshuo: hustcat
+email: wt827357393@gmail.com
+duoshuo: superashan
 beian: 
 cnzz: 
-weibo: hustcat
-github: hustcat
+weibo: superashan
+github: superashan
 paginate: 20
 highlighter: rouge
 truncate: true
-about: "YY哥(hustcat)"
+about: "超级山子(superashan)"
