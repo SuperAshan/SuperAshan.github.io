@@ -7,7 +7,9 @@ categories:
   - 源码阅读
 tags:
   - word2vector，wordtovector，词向量，源码，源代码，负抽样，cbow
+excerpt: Dive deep into inotify and overlayfs
 ---
+
 ##基本的参数介绍
 
 + **size** 输出的vector的维度
