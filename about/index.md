@@ -9,17 +9,16 @@ comments: no
 
 {{ site.about }}
 
-专业打杂程序员，全栈工程师，擅长打杂，吹牛逼...
+机器学习、数据挖掘、深度学习持续关注，源码阅读爱好者...
 
-关注 Linux kernel、Docker/Kubernetes、Networking、Distributed Storage...
 
 
 ---
 ### 经历
 
-* 2004.09 ~ 2011.04 游学于武汉某985职业技术学院 —— 关山口职业技术学院
+* 2008.09 ~ 2015.04 混迹于明光桥搬砖子弟学校 
 
-* 2011.04 ~ Now     在深圳某国内前三互联网公司，从事搬砖、打杂等相关工作
+* 2015.04 ~ Now     在宇宙中心某搜索公司从事搬砖，打杂工作
 
 
 ----
@@ -35,12 +34,4 @@ comments: no
 
 GitHub：[http://github.com/{{ site.github }}](http://github.com/{{ site.github }})
 
-Twitter: [hustcat](https://twitter.com/hustcat)
 
-@cnblogs：[hustcat](http://hustcat.cnblogs.com)
-
-----
-
-[![新浪微博](http://service.t.sina.com.cn/widget/qmd/1831504255/02345c5a/1.png)](http://weibo.com/u/1831504255?s=6uyXnP)
-
-----
