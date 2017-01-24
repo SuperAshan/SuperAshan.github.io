@@ -1,42 +1,3 @@
-<<<<<<< HEAD
-permalink: /blog/:year/:month/:title.html 
-include: ['.htaccess']
-exclude: [".rvmrc", ".rbenv-version", "README.md", "Rakefile", "changelog.md", "CNAME", "Gemfile"]
-markdown: kramdown
-highlights: pygments
-url: 
-cdn_url: 7u2t01.com1.z0.glb.clouddn.com
-lsi: false
-safe: true
-timezone: Asia/Shanghai
-auto: false 
-
-paginate: 8
-paginate_path: "page:num"
-
-kramdown:
-  auto_ids: true,
-  footnote_nr: 1
-  entity_output: as_char
-  toc_levels: 1..6
-  use_coderay: false
-
-JB :
-  IMAGE_PATH : http://ashan.info/images
-
-# presonal config
-domain: http://ashan.info
-title: 阿山博客
-description: 技术人生
-author: 阿山
-email: work.ashan@gmail.com
-github: SuperAshan
-
-config:
-  js_dir:
-  img_dir:
-  css_dir:
-=======
 future: true
 permalink: /:title/
 url: http://superashan.github.io
@@ -53,4 +14,3 @@ paginate: 20
 highlighter: rouge
 truncate: true
 about: "超级山子(superashan)"
->>>>>>> 20268baab056d777f6812b3c16c602fa7e372773
