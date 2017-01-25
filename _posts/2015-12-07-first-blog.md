@@ -5,7 +5,7 @@ layout: post
 permalink: /blog/2015/12/07/first-blog.html
 categories: 测试
 tags: Life 生活
-excerpt:test
+excerpt: test
 ---
 
 我的个人博客上线了．
