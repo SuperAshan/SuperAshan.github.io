@@ -26,7 +26,6 @@
    js_dir:
    img_dir:
    css_dir:
- =======
 future: true
 permalink: /:title/
 url: http://superashan.github.io
