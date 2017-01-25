@@ -1,5 +1,4 @@
 <<<<<<< HEAD
- permalink: /:title/
  include: ['.htaccess']
  exclude: [".rvmrc", ".rbenv-version", "README.md", "Rakefile", "changelog.md", "CNAME", "Gemfile"]
  markdown: kramdown
