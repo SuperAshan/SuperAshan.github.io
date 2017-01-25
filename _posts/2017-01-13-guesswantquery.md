@@ -1,7 +1,8 @@
 ---
+title: 工作笔记之一：猜你喜欢模块
+date: 2017-01-13
 layout: post
-title:  工作笔记之一：猜你喜欢模块
-date: 2015-12-09 23:40:30
+permalink: /blog/2017/01/13/guesswantquery.html
 categories: 工作笔记
 tags: 推荐 短文本 去重 反垃圾
 excerpt: "记录在猜你想搜模块的心得"
