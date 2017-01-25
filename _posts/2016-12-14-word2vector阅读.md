@@ -5,6 +5,7 @@ layout: post
 permalink: /blog/2016/12/14/word2vector阅读.html
 categories: 源码阅读
 tags: word2vector wordtovector 词向量 源码 源代码 负抽样 cbow
+excerpt:wordtovecor的代码解释
 ---
 
 ##基本的参数介绍
