@@ -5,7 +5,11 @@ layout: post
 permalink: /blog/2016/12/14/word2vector阅读.html
 categories: 源码阅读
 tags: word2vector wordtovector 词向量 源码 源代码 负抽样 cbow
+<<<<<<< HEAD
 excerpt: wordtovecor的代码解释
+=======
+excerpt: 根据word2vector的源码介绍其原理以及如何应用
+>>>>>>> 3e7b34a908d4d05839fd42c2742a863b80aea7e3
 ---
 
 ##基本的参数介绍
