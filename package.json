@@ -2,7 +2,7 @@
     "name": "ashan-blog",
     "title": "ashan Blog",
     "version": "1.0.0",
-    "homepage": "http://ashan.github.io",
+    "homepage": "http://superashan.github.io",
     "author": "ashan",
     "devDependencies": {
         "grunt": "~0.4.5",
