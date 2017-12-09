@@ -1,22 +1,22 @@
 # Site settings
-title: Your Blog
-SEOTitle: 你的博客 | Your Blog
+title: 山谷之地
+SEOTitle: 山谷之地 | ashanblog
 header-img: img/home-bg.jpg
-email: huxpro@gmail.com
+email: wt827357393@gmail.com
 description: ""
 keyword: ""
-url: "http://huangxuan.me"              # your host, for absolute URL
-baseurl: "/huxblog-boilerplate"         # for example, '/blog' if your blog hosted on 'host/blog'
+url: "http://superashan.io"              # your host, for absolute URL
+baseurl: "/blog"         # for example, '/blog' if your blog hosted on 'host/blog'
 
 
 
 # SNS settings
 RSS: false
-weibo_username:     huxpro
-zhihu_username:     huxpro
-github_username:    huxpro
+weibo_username:     ashan
+zhihu_username:     zhihu
+github_username:    ashan
 #twitter_username:  huxpro
-facebook_username:  huxpro
+facebook_username:  ashan
 
 
 
@@ -50,7 +50,7 @@ kramdown:
 #disqus_username: _your_disqus_short_name_
 
 # Duoshuo settings
-duoshuo_username: huxblog
+duoshuo_username: ashanblog
 # Share component is depend on Comment so we can NOT use share only.
 duoshuo_share: true                     # set to false if you want to use Comment without Sharing
 
