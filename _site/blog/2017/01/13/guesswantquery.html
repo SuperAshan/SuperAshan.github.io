@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>
+    工作笔记之一：猜你喜欢模块 - Clean Blog
+    
+  </title>
+
+  <meta name="description" content="记录在猜你想搜模块的心得">
+
+  <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="/blog/assets/vendor/bootstrap/css/bootstrap.min.css">
+
+  <link rel="stylesheet" href="/blog/assets/vendor/font-awesome/css/font-awesome.min.css">
+
+  <link rel="stylesheet" href="/blog/assets/main.css">
+  <link rel="canonical" href="http://localhost:4000/blog/blog/2017/01/13/guesswantquery.html">
+  <link rel="alternate" type="application/rss+xml" title="Clean Blog" href="/blog/feed.xml">
+
+</head>
+
+
+  <body>
+
+    <!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+  <div class="container">
+    <a class="navbar-brand" href="/blog/">Start Bootstrap</a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      Menu
+      <i class="fa fa-bars"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/blog/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/blog/about">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/blog/posts">Posts</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/blog/contact">Contact</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+    <!-- Page Header -->
+
+<header class="masthead">
+
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <div class="post-heading">
+          <h1>工作笔记之一：猜你喜欢模块</h1>
+          
+          <span class="meta">Posted by
+            <a href="#">Start Bootstrap</a>
+            on January 13, 2017</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 col-md-10 mx-auto">
+
+      <p>##猜你喜欢</p>
+
+<p>推荐语料为搜索query，目标为提升搜索量，提升用户搜索体验，分解一下为推出的query为相关和惊喜度，+热门
+整体方案如下：
+<img src="http://superashan.github.io/images/guesswantquery/structure.png" alt="猜你喜欢数据流程图" /></p>
+
+<h2 id="召回阶段">###召回阶段</h2>
+<p><strong>1. 种子集合</strong></p>
+
+<ul>
+  <li>搜索的query，按照搜索的频度可以分为经常搜索的和最近搜索的query</li>
+  <li>用户的画像(可以根据用户的其他行为),最好对于用户总结关键词，tag，类别等分层次的行为</li>
+</ul>
+
+<p><strong>2. 扩展候选集合</strong></p>
+
+<ul>
+  <li>扩展可以根据item-base,query之间的关系扩展</li>
+  <li>扩展可以根据用户的关键词图谱召回相关query</li>
+  <li>扩展可以通过tag和类别召回惊喜度较高的query</li>
+  <li>有些词语不进行扩展，专门的词库:天气，彩票，双色球等等</li>
+</ul>
+
+<p><strong>3.低质量过滤</strong></p>
+
+<ul>
+  <li>第一层为query的UV过滤
+    <ul>
+      <li>uv过滤根据query的搜索UV，删掉搜索人数比较少的query，砍掉80%的query</li>
+    </ul>
+  </li>
+  <li>第二层基于词表的过滤
+    <ul>
+      <li><strong>全量匹配</strong>：全量是硬匹配，一些事件，人物，垃圾词等等。“蛤蛤怒斥香港女记者”，“身度完整版”，“6080神马影院”，“东条希本子”</li>
+      <li><strong>部分匹配</strong>:一些垃圾词，色情，隐私等</li>
+      <li><strong>乱码</strong>：可能是韩文，日文，搜索日志中的乱码。</li>
+      <li><strong>政治敏感词</strong>:政治敏感词库不能出</li>
+      <li><strong>竞品词</strong>：不让出的</li>
+    </ul>
+  </li>
+  <li>第二层为基于libshorttxt的二分类模型
+    <ul>
+      <li>以字为特征，构造正例和负例。其中正例为热门中的正常query。负例为匹配出来的query，两边都是1万</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>4.去重</strong></p>
+
+<p>由于用户本身搜索的query表明的意思比较集中，则通过扩展构造的query集合大量重复的query，这种大量重复的query影响了用户体验。所以需要去重逻辑，保证推出的query的多样性</p>
+
+<ul>
+  <li>
+    <p>第一层去重逻辑为长词的归一化</p>
+
+    <p>归一化的目的是合并一些表明一个意思的词语到一个意思，类似于query聚类，然后去类的中心点。聚类通过query的点击url的关系来实现，实现方法是将点击一个url（这个url必须是落地页面）的query中找到一个keyquery，keyquery的计算方法是用query的点击次数/query的长度，然后将二者的关系作为key,value,相同的key选value最大的为keyquery</p>
+
+    <ul>
+      <li>归一化比较规范的:
+        <ul>
+          <li>00后时髦小女生图片  REPLACE 00后小美女/2.4</li>
+          <li>贷视频流出 REPLACE 裸贷肉偿视频遭疯传/8.5 不同地方热点事件归一化到最规范的说法</li>
+          <li>12360下载官方下载手机版 REPLACE 12360下载/175.111111111</li>
+          <li>qq飞车星光秀场怎么进去  REPLACE 星光秀场/114.75</li>
+          <li>奥运会项目有哪些    REPLACE 奥运会/55.6</li>
+          <li>芭比公主之美人鱼的故事  REPLACE 美人鱼故事/4.6</li>
+          <li>八零后副厅  REPLACE 王玺玮的父亲/4.0</li>
+          <li>保卫萝卜2攻略108攻略水晶萝卜头  REPLACE 保卫萝卜108/3.63636363636</li>
+          <li>保卫部落3d策略塔防  REPLACE 保卫部落/4.0</li>
+        </ul>
+      </li>
+      <li>也有代表并不正确：
+        <ul>
+          <li>07excel箭头在哪 REPLACE excel绘图工具在哪/3.64705882353</li>
+          <li>09年君威    REPLACE 09年君威二手车价格/478.75</li>
+          <li>0p手机剩余电量怎么设置  REPLACE 小米手机电量百分比/7.88888888889</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>第二层为一些case的规则:
+    <ul>
+      <li>比如说对小说多个章节，电影多个系列的合并，通过正则表达式[\d]+?字，部，章等
+        <ul>
+          <li>三妹53集        NEW:三妹</li>
+          <li>小雄的故事1864章        NEW:小雄的故事</li>
+        </ul>
+      </li>
+      <li>根据一些词语切割，取前面的意思：
+        <ul>
+          <li>OLD:0852蟹总完整版     NEW:0852蟹总</li>
+          <li>OLD:2345影视大全       NEW:2345影视</li>
+          <li>gta5秘籍大全       NEW:gta5秘籍</li>
+          <li>傲世掌控txt下载    NEW:傲世掌控</li>
+          <li>爱莎美瞳官网       NEW:爱莎美瞳</li>
+          <li>霸皇下载   NEW:霸皇</li>
+        </ul>
+      </li>
+      <li>针对小说漫画，针对用户构成，对小说，漫画单独处理，根据小说的名字，漫画的名字，每个中最多出两个:
+        <ul>
+          <li>择天记电视剧-择天记</li>
+          <li>
+            <table>
+              <tbody>
+                <tr>
+                  <td>偷香高手</td>
+                  <td> </td>
+                  <td>5</td>
+                  <td> </td>
+                  <td>0.13032</td>
+                  <td> </td>
+                  <td>712   偷香高手类似的</td>
+                </tr>
+              </tbody>
+            </table>
+          </li>
+          <li>绝世兵王五十二策  绝世兵王</li>
+        </ul>
+      </li>
+      <li>包含关系
+        <ul>
+          <li>包含关系留下UV大的</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>第三层是根据一些字面的意思：但是query1+query2的长度必须小于9，不做处理，错误率比较高
+    <ul>
+      <li>字集合的jaccad系数和提取关键词的集合jaccad系数(关键词定义为<strong><em>名词，动词，成语，关键词</em></strong>集合中的jaccard系数)
+        <ul>
+          <li><strong>正确的</strong>
+            <ul>
+              <li>6s运行内存多大    苹果运行内存多大        0.750   0.750</li>
+              <li>dmi指标详解       dmi指标详解视频 0.778   0.778</li>
+              <li>阿笠博士的幕后故事        阿笠博士幕后故事17</li>
+              <li>穿越火线乔杉电影  穿越火线电影    0.750   0.750</li>
+              <li>初中生综合素质评价        初中生综合素质评语</li>
+              <li>荣耀magic视频     荣耀magic       0.778   0.778</li>
+            </ul>
+          </li>
+          <li><strong>错误的</strong>
+            <ul>
+              <li>超级农场  超级农场主      0.800   0.800</li>
+              <li>大明星的贴身护卫  大小姐的贴身护卫        0.750   0.750</li>
+              <li>都市仙君  都市大仙君      0.800   0.800</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>语义层面的去重，通过wordtovector训练term之间的关系，主要解决的问题是短文本，query1+query2的长度&lt;9的词语，一些明显关联度比较高的</p>
+
+    <ul>
+      <li>
+        <table>
+          <tbody>
+            <tr>
+              <td>羽衣传说</td>
+              <td> </td>
+              <td>5</td>
+              <td> </td>
+              <td>0.20555</td>
+              <td> </td>
+              <td>1373–羽衣传说目录</td>
+              <td> </td>
+              <td>5</td>
+              <td> </td>
+              <td>0.20319</td>
+              <td> </td>
+              <td>1715      0.816</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+      <li>
+        <table>
+          <tbody>
+            <tr>
+              <td>于成龙</td>
+              <td> </td>
+              <td>5</td>
+              <td> </td>
+              <td>0.10566</td>
+              <td> </td>
+              <td>62266–于成龙电视剧</td>
+              <td> </td>
+              <td>2</td>
+              <td> </td>
+              <td>2</td>
+              <td> </td>
+              <td>111943   0.780</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+      <li>
+        <table>
+          <tbody>
+            <tr>
+              <td>爱恨何欢</td>
+              <td> </td>
+              <td>8</td>
+              <td> </td>
+              <td>0.17406</td>
+              <td> </td>
+              <td>44–爱恨何欢欣欣向荣</td>
+              <td> </td>
+              <td>3</td>
+              <td> </td>
+              <td>10</td>
+              <td> </td>
+              <td>45   0.882</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+      <li>
+        <table>
+          <tbody>
+            <tr>
+              <td>冷酷总裁的一夜情人</td>
+              <td> </td>
+              <td>5</td>
+              <td> </td>
+              <td>0.10671</td>
+              <td> </td>
+              <td>1920–总裁的囚宠情人</td>
+              <td> </td>
+              <td>2</td>
+              <td> </td>
+              <td>2</td>
+              <td> </td>
+              <td>9933    0.832</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+      <li>
+        <table>
+          <tbody>
+            <tr>
+              <td>天才魔妃太难追</td>
+              <td> </td>
+              <td>2</td>
+              <td> </td>
+              <td>3</td>
+              <td> </td>
+              <td>2706–天才魔妃我要了</td>
+              <td> </td>
+              <td>5</td>
+              <td> </td>
+              <td>0.10264</td>
+              <td> </td>
+              <td>6309    0.799</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+      <li>
+        <table>
+          <tbody>
+            <tr>
+              <td>红色鞋子</td>
+              <td> </td>
+              <td>8</td>
+              <td> </td>
+              <td>0.08283</td>
+              <td> </td>
+              <td>52–鞋子</td>
+              <td> </td>
+              <td>3</td>
+              <td> </td>
+              <td>3</td>
+              <td> </td>
+              <td>223   0.779</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+      <li>
+        <table>
+          <tbody>
+            <tr>
+              <td>夜太黑</td>
+              <td> </td>
+              <td>8</td>
+              <td> </td>
+              <td>0.09022</td>
+              <td> </td>
+              <td>182–夜太黑林忆莲</td>
+              <td> </td>
+              <td>3</td>
+              <td> </td>
+              <td>10</td>
+              <td> </td>
+              <td>394   0.850</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+      <li>
+        <table>
+          <tbody>
+            <tr>
+              <td>冰火魔厨</td>
+              <td> </td>
+              <td>3</td>
+              <td> </td>
+              <td>3</td>
+              <td> </td>
+              <td>8336–冰火魔厨漫画</td>
+              <td> </td>
+              <td>8</td>
+              <td> </td>
+              <td>0.21497</td>
+              <td> </td>
+              <td>21585   0.866</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+      <li>
+        <table>
+          <tbody>
+            <tr>
+              <td>洪荒之证道不朽</td>
+              <td> </td>
+              <td>8</td>
+              <td> </td>
+              <td>0.09329</td>
+              <td> </td>
+              <td>244–洪荒不朽</td>
+              <td> </td>
+              <td>8</td>
+              <td> </td>
+              <td>0.10211</td>
+              <td> </td>
+              <td>3093 0.880</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+      <li>
+        <table>
+          <tbody>
+            <tr>
+              <td>星际全能女王</td>
+              <td> </td>
+              <td>8</td>
+              <td> </td>
+              <td>0.08964</td>
+              <td> </td>
+              <td>14–星际女神攻略</td>
+              <td> </td>
+              <td>3</td>
+              <td> </td>
+              <td>3</td>
+              <td> </td>
+              <td>1335  0.792</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+      <li>
+        <table>
+          <tbody>
+            <tr>
+              <td>洛天依</td>
+              <td> </td>
+              <td>3</td>
+              <td> </td>
+              <td>5</td>
+              <td> </td>
+              <td>11415–洛天依吸毒</td>
+              <td> </td>
+              <td>8</td>
+              <td> </td>
+              <td>0.22113</td>
+              <td> </td>
+              <td>45463  0.725</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+      <li>
+        <table>
+          <tbody>
+            <tr>
+              <td>捕鱼大师</td>
+              <td> </td>
+              <td>5</td>
+              <td> </td>
+              <td>0.23225</td>
+              <td> </td>
+              <td>758–捕鱼大师破解版</td>
+              <td> </td>
+              <td>2</td>
+              <td> </td>
+              <td>2</td>
+              <td> </td>
+              <td>854</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+      <li>
+        <table>
+          <tbody>
+            <tr>
+              <td>蛇蛇大作战无敌版</td>
+              <td> </td>
+              <td>8</td>
+              <td> </td>
+              <td>0.10439</td>
+              <td> </td>
+              <td>2642–贪吃蛇大作战</td>
+              <td> </td>
+              <td>8</td>
+              <td> </td>
+              <td>0.10919</td>
+              <td> </td>
+              <td>35958 0.816</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="排序阶段">###排序阶段</h2>
+
+<p>排序阶段一般采用learning to rank,或者ctr预估的模型，这个后续再写，第一版的版本就是按照规则排序的。聚类之后打散的过程，按照常搜在前面的内容</p>
+
+
+
+      <hr>
+
+      <div class="clearfix">
+
+        
+        <a class="btn btn-primary float-left" href="/blog/blog/2016/12/14/word2vector阅读.html" data-toggle="tooltip" data-placement="top" title="源码阅读系列之word2vector">&larr; Previous<span class="d-none d-md-inline"> Post</span></a>
+        
+        
+        <a class="btn btn-primary float-right" href="/blog/blog/2017/02/21/textrank解读.html" data-toggle="tooltip" data-placement="top" title="源码阅读系列之textrank">Next<span class="d-none d-md-inline"> Post</span> &rarr;</a>
+        
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+    <!-- Footer -->
+
+<hr>
+
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <ul class="list-inline text-center">
+          
+          <li class="list-inline-item">
+            <a href="https://www.twitter.com/SBootstrap">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+          
+          <li class="list-inline-item">
+            <a href="https://www.facebook.com/StartBootstrap">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+          
+          <li class="list-inline-item">
+            <a href="https://github.com/BlackrockDigital">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+        </ul>
+        <p class="copyright text-muted">Copyright &copy; Start Bootstrap 2017</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <script src="/blog/assets/vendor/jquery/jquery.min.js"></script>
+<script src="/blog/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/blog/assets/vendor/startbootstrap-clean-blog/js/clean-blog.min.js"></script>
+
+<script src="/blog/assets/scripts.js"></script>
+
+
+
+
+  </body>
+
+</html>
